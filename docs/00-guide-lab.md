@@ -12,15 +12,19 @@ deux VM sur un **réseau interne / host-only** : elles se voient entre elles, po
 
 ---
 
-## Job 02 — VM Metasploitable 2
+## Job 02 — VM Metasploitable 2 (VMware)
 
-1. Télécharger `metasploitable-linux-2.0.0.zip` (SourceForge, projet Metasploitable).
-2. Dézipper → on obtient un disque `.vmdk`.
-3. VirtualBox → Nouvelle VM : type Linux, « Other Linux 64-bit », 512 Mo–1 Go RAM, et
-   **utiliser le disque existant** (le `.vmdk`).
-4. Carte réseau → **Réseau interne** (ex. nom `labsec`) ou **Host-only**.
-5. Démarrer. Connexion : **msfadmin / msfadmin**.
-6. Relever son IP : `ip a` (souvent `eth0`). → **la noter dans le README**.
+Le zip de Metasploitable contient **déjà une VM VMware** : le fichier `Metasploitable.vmx`
+(avec le `.vmdk`, `.nvram`…). Pas besoin de créer une VM ni de déplacer le `.vmdk`.
+
+1. Télécharger `metasploitable-linux-2.0.0.zip` (SourceForge) et dézipper.
+2. (Optionnel) déplacer **tout le dossier** `Metasploitable2-Linux` dans
+   `Documents\Virtual Machines\`.
+3. VMware → **Fichier → Ouvrir une machine virtuelle** → choisir `Metasploitable.vmx`.
+4. Paramètres de la VM → **Carte réseau → Hôte uniquement** (même réseau que la VM Debian).
+5. Démarrer → au premier lancement, choisir **« Je l'ai copiée »**.
+6. Connexion : **msfadmin / msfadmin**. Relever l'IP : `ip a` (interface `eth0`).
+   → **la noter dans le README**.
 
 📸 Captures : VM qui boote, login réussi, sortie de `ip a`.
 
@@ -28,9 +32,12 @@ deux VM sur un **réseau interne / host-only** : elles se voient entre elles, po
 
 ## Job 03 — VM Debian + Nessus (+ Metasploit)
 
-### Debian
+### Debian (VMware)
 
-- VM Debian 12 classique, **même réseau interne** que Metasploitable.
+- Créer une VM Debian 12 : installer depuis l'ISO Debian (CD/DVD de la VM).
+- **Dimensionnement conseillé** : RAM **4 Go**, **2 vCPU**, disque **25-30 Go**
+  (Nessus + ses plugins sont gourmands ; 1 Go de RAM / 8 Go de disque sont trop justes).
+- Carte réseau → **Hôte uniquement**, le **même** réseau que Metasploitable.
 - Relever son IP (`ip a`) → la noter.
 - Vérifier que les deux VM se pingent : `ping <IP_metasploitable>`.
 
