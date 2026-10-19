@@ -34,7 +34,10 @@ Le zip de Metasploitable contient **déjà une VM VMware** : le fichier `Metaspl
 
 ### Debian (VMware)
 
-- Créer une VM Debian 12 : installer depuis l'ISO Debian (CD/DVD de la VM).
+Il n'existe pas de VM Nessus prête à l'emploi (Nessus = logiciel à installer sur un OS).
+Le plus rapide : **réutiliser l'OVA Debian 13** (Fichier → Ouvrir → le `.ova`), ou cloner la
+VM `Debian13-Base` existante. À défaut, créer une VM et installer Debian depuis l'ISO.
+
 - **Dimensionnement conseillé** : RAM **4 Go**, **2 vCPU**, disque **25-30 Go**
   (Nessus + ses plugins sont gourmands ; 1 Go de RAM / 8 Go de disque sont trop justes).
 - Carte réseau → **Hôte uniquement**, le **même** réseau que Metasploitable.
