@@ -36,13 +36,26 @@ Reprise synthétique dans le support de soutenance.
 
 ## Job 02 — VM Metasploitable 2
 
-*À compléter : import de la VM, réseau, première connexion (msfadmin).*
-Captures : `captures/job02-metasploitable2/`
+VM importée sous VMware (fichier `.vmx` déjà fourni dans l'archive), carte réseau en
+**host-only** (VMnet1). Connexion `msfadmin` / `msfadmin`, adresse obtenue en DHCP :
+**192.168.100.10** (`eth0`). La cible et l'attaquant se pingent (0 % de perte).
+
+![Metasploitable : IP et ping vers l'attaquant](captures/job02-metasploitable2/01-ip-et-ping.png)
 
 ## Job 03 — VM Debian + Nessus
 
-*À compléter : installation de Nessus, démarrage du service, activation, compte.*
-Captures : `captures/job03-debian-nessus/`
+Debian 13 réutilisée depuis un OVA, **2 cartes réseau** (NAT pour Internet + host-only
+`192.168.100.11`). Nessus Essentials téléchargé et installé en ligne de commande, service
+`nessusd` démarré, puis configuration depuis le navigateur de l'hôte
+(`https://192.168.100.11:8834`).
+
+Création du compte administrateur (mot de passe **masqué** dans la capture) :
+
+![Création du compte Nessus](captures/job03-debian-nessus/01-creation-compte.png)
+
+Nessus Essentials opérationnel, compilation des plugins en cours :
+
+![Accueil Nessus Essentials](captures/job03-debian-nessus/02-accueil-nessus.png)
 
 ## Job 04 — Scan et analyse
 
