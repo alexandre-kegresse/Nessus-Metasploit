@@ -13,12 +13,16 @@ Cible : **Metasploitable 2**, machine volontairement vulnérable, dans un lab **
 
 ## Le lab
 
-| Machine | Rôle | IP (à compléter) |
-|---|---|---|
-| Debian + Nessus + Metasploit | Attaquant / scanner | `à compléter` |
-| Metasploitable 2 | Cible vulnérable | `à compléter` |
+Hyperviseur : **VMware Workstation**.
 
-Réseau : host-only / réseau interne (aucun accès Internet pour la cible).
+| Machine | Rôle | Réseau / IP |
+|---|---|---|
+| Debian 13 + Nessus + Metasploit | Attaquant / scanner | NAT (VMnet8) `192.168.58.161` pour Internet **+** host-only (VMnet1) `192.168.100.x` pour atteindre la cible |
+| Metasploitable 2 | Cible vulnérable | host-only (VMnet1) `192.168.100.10` — **jamais** d'accès Internet |
+
+Choix réseau : la cible reste **isolée** en host-only ; la VM attaquante a une 2ᵉ carte NAT
+uniquement pour télécharger les paquets (Nessus, Metasploit). Les deux VM se voient sur le
+réseau host-only `192.168.100.0/24` (DHCP activé sur VMnet1).
 
 ---
 
