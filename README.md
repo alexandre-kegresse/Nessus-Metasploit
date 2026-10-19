@@ -59,13 +59,32 @@ Nessus Essentials opérationnel, compilation des plugins en cours :
 
 ## Job 04 — Scan et analyse
 
-*À compléter : scan « Basic Network Scan » sur la cible, vulnérabilités critiques
-trouvées, type de chaque vulnérabilité.*
-Captures : `captures/job04-scan/`
+Scan **Basic Network Scan** lancé sur `192.168.100.10`. Résultat : **56 vulnérabilités**,
+dont **6 critiques** et plusieurs hautes. Liste triée par sévérité :
 
-| Vulnérabilité | Service / port | Sévérité | CVE | Type |
+![Vulnérabilités triées par sévérité](captures/job04-scan/01-vulnerabilites-triees.png)
+
+### Principales vulnérabilités critiques / hautes
+
+| Vulnérabilité | Service concerné | Sévérité | CVSS | Nature |
 |---|---|---|---|---|
-| *à compléter* | | | | |
+| Canonical Ubuntu Linux SEoL (8.04.x) | Système d'exploitation | Critical | 10.0 | OS en fin de vie, plus aucun correctif de sécurité |
+| VNC Server 'password' Password | VNC (prise de main à distance) | Critical | 10.0 | mot de passe trivial → accès distant |
+| SSL Version 2 and 3 Protocol Detection | Chiffrement des services | Critical | 9.8 | protocoles SSL obsolètes et cassés |
+| Apache Tomcat AJP Connector (Ghostcat) | Serveur web Tomcat | Critical | 9.8 | injection de requête AJP (CVE-2020-1938) |
+| Bind Shell Backdoor Detection | Porte dérobée (backdoor) | Critical | 9.8 | un shell **root** est déjà ouvert en écoute |
+| NFS Shares World Readable | NFS (partage réseau) | High | 7.5 | partage accessible en lecture par tout le monde |
+| Samba Badlock Vulnerability | SMB / Samba | High | 7.5 | faille du protocole SMB |
+
+### Types de vulnérabilités rencontrés
+
+- **Portes dérobées (backdoors)** : un shell root déjà ouvert sur la machine.
+- **Services / OS obsolètes** non mis à jour (Ubuntu 8.04, SSLv2/3).
+- **Authentification faible** : mot de passe par défaut (VNC).
+- **Exécution de code à distance** sur des services web (Tomcat AJP).
+- **Partages réseau mal protégés** (NFS, SMB).
+
+→ Cibles retenues pour l'exploitation : voir Jobs 05 (FTP **vsftpd 2.3.4**) et 06 (**SMB/Samba**).
 
 ## Job 05 — Exploitation d'une vulnérabilité
 
