@@ -142,8 +142,34 @@ d'utilisateur SMB est exécutée par le serveur.
 
 ## Job 07 — Correction des vulnérabilités
 
-*À compléter : correctifs proposés, importance des mises à jour et des audits.*
-Captures : `captures/job07-remediation/`
+### Correctifs par vulnérabilité
+
+| Vulnérabilité | Correctif proposé |
+|---|---|
+| vsFTPd 2.3.4 (backdoor) | Mettre à jour vsftpd vers une version saine depuis une source officielle ; supprimer la version compromise. |
+| Samba `usermap_script` (CVE-2007-2447) | Mettre à jour Samba ; retirer l'option `username map script` de `smb.conf`. |
+| VNC — mot de passe trivial | Mot de passe fort, et restreindre l'accès VNC (pare-feu, VPN). |
+| Ubuntu 8.04 en fin de vie / SSLv2-3 | Migrer vers un OS **supporté** et à jour ; désactiver SSLv2/SSLv3, n'autoriser que TLS récent. |
+| Partages NFS/SMB trop ouverts | Restreindre les droits et les hôtes autorisés sur les partages. |
+
+### Bonnes pratiques générales
+
+- **Mises à jour régulières** (patch management) : la plupart des failles exploitées ici sont
+  anciennes et **corrigées depuis longtemps** — un système à jour n'aurait pas été vulnérable.
+- **Désactiver les services inutiles** pour réduire la surface d'attaque.
+- **Ne pas faire tourner les services en root** (ici Samba et le FTP tournaient en root → l'accès
+  était immédiatement total).
+- **Comptes et mots de passe robustes**, suppression des comptes et mots de passe par défaut.
+- **Segmentation réseau et pare-feu** pour limiter ce qui est accessible.
+
+### Importance des audits
+
+Un **audit régulier** (scan Nessus récurrent) permet de détecter les vulnérabilités **avant**
+qu'un attaquant ne les exploite, et de vérifier que les correctifs sont bien appliqués.
+Détection (Nessus) + correction + nouvel audit = un cycle à répéter dans le temps.
+
+> Pour chaque finding, Nessus fournit lui-même une section **Solution** réutilisable comme base
+> de remédiation.
 
 ---
 
