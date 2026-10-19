@@ -44,20 +44,32 @@ VM `Debian13-Base` existante. À défaut, créer une VM et installer Debian depu
 - Relever son IP (`ip a`) → la noter.
 - Vérifier que les deux VM se pingent : `ping <IP_metasploitable>`.
 
-### Nessus Essentials
+### Nessus Essentials (install en ligne de commande, config depuis le navigateur Windows)
 
-1. Sur https://www.tenable.com/products/nessus/nessus-essentials → récupérer un **code
-   d'activation** (gratuit) + télécharger le `.deb` Debian.
-2. Installer :
+Rappel : sur cette Debian on est **root** (pas de `sudo`). Internet passe par la carte NAT.
+
+1. **Code d'activation** : depuis le navigateur Windows, s'inscrire sur
+   https://www.tenable.com/products/nessus/nessus-essentials → le code arrive par mail.
+2. **Télécharger le `.deb`** sur la VM (version 10.12.5 au 19/10/2026) :
    ```bash
-   sudo dpkg -i Nessus-*-debian*.deb
-   sudo systemctl start nessusd
-   sudo systemctl enable nessusd
+   apt update && apt install -y curl
+   curl -L -o Nessus.deb \
+     'https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.12.5-debian10_amd64.deb'
    ```
-3. Ouvrir **https://localhost:8834** (accepter l'avertissement TLS auto-signé).
-4. Choisir « Nessus Essentials », coller le code, **créer le compte admin**.
-   - 🔒 Mot de passe saisi dans l'interface, **jamais** mis dans une capture ni dans le dépôt.
-5. Nessus compile ses plugins (long, 10–30 min). On attend que ce soit « Ready ».
+   (le build `debian10` fonctionne sur Debian 13.)
+3. **Installer et démarrer** :
+   ```bash
+   dpkg -i Nessus.deb
+   systemctl start nessusd
+   systemctl enable nessusd
+   ```
+4. **Configurer depuis le navigateur de Windows** (la VM n'a pas d'interface graphique) :
+   ouvrir **https://192.168.100.11:8834** (accepter l'avertissement TLS auto-signé).
+   → « Nessus Essentials » → coller le code → **créer le compte admin**.
+   - 🔒 Mot de passe saisi dans l'interface, **jamais** dans une capture ni dans le dépôt.
+5. Nessus compile ses plugins (long, 10–30 min). On attend l'état « Ready ».
+
+📸 Captures : `systemctl status nessusd` actif, page d'accueil Nessus, compilation des plugins.
 
 📸 Captures : service `nessusd` actif, page de login, écran « plugins compiling », accueil.
 

@@ -17,12 +17,15 @@ Hyperviseur : **VMware Workstation**.
 
 | Machine | Rôle | Réseau / IP |
 |---|---|---|
-| Debian 13 + Nessus + Metasploit | Attaquant / scanner | NAT (VMnet8) `192.168.58.161` pour Internet **+** host-only (VMnet1) `192.168.100.x` pour atteindre la cible |
-| Metasploitable 2 | Cible vulnérable | host-only (VMnet1) `192.168.100.10` — **jamais** d'accès Internet |
+| Debian 13 + Nessus + Metasploit | Attaquant / scanner | NAT (VMnet8) `192.168.58.161` pour Internet **+** host-only (VMnet1) `192.168.100.11` (interface `ens34`) pour atteindre la cible |
+| Metasploitable 2 | Cible vulnérable | host-only (VMnet1) `192.168.100.10` (`eth0`) — **jamais** d'accès Internet |
 
 Choix réseau : la cible reste **isolée** en host-only ; la VM attaquante a une 2ᵉ carte NAT
 uniquement pour télécharger les paquets (Nessus, Metasploit). Les deux VM se voient sur le
 réseau host-only `192.168.100.0/24` (DHCP activé sur VMnet1).
+
+Liaison vérifiée : **ping bidirectionnel OK** entre `192.168.100.11` et `192.168.100.10`
+(0 % de perte).
 
 ---
 
