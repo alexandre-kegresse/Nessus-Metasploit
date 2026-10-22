@@ -162,6 +162,28 @@ d'utilisateur SMB est exécutée par le serveur.
 - **Comptes et mots de passe robustes**, suppression des comptes et mots de passe par défaut.
 - **Segmentation réseau et pare-feu** pour limiter ce qui est accessible.
 
+### Démonstration : une correction appliquée et re-testée (Samba)
+
+Pour vérifier concrètement qu'un correctif fonctionne, j'ai corrigé la faille **Samba**
+(celle exploitée au Job 06) puis relancé l'exploit.
+
+1. Sur la cible, dans `/etc/samba/smb.conf`, j'ai **désactivé** l'option vulnérable en la
+   commentant (`#`), puis redémarré Samba (`/etc/init.d/samba restart`) :
+
+![Option username map script désactivée](captures/job07-remediation/01-correction-smb-conf.png)
+
+2. Depuis la machine attaquante, j'ai relancé le même exploit Metasploit. Résultat :
+   **« Exploit completed, but no session was created »** → plus aucun accès obtenu.
+
+![L'exploit échoue après correction](captures/job07-remediation/02-exploit-echoue-apres-correction.png)
+
+**Avant / après :** avant correction → shell root (Job 06) ; après correction → échec. Le
+correctif est validé par la mesure, pas supposé.
+
+> Remarque : Metasploitable est volontairement obsolète (Ubuntu 8.04, dépôts fermés), donc
+> un vrai `apt upgrade` des paquets n'est pas possible — on corrige par la **configuration**
+> (désactiver l'option/le service vulnérable), ce qui est aussi une remédiation valable.
+
 ### Importance des audits
 
 Un **audit régulier** (scan Nessus récurrent) permet de détecter les vulnérabilités **avant**
